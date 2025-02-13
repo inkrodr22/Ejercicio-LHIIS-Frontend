@@ -1,0 +1,110 @@
+<div class="p-6">
+<div className="min-h-screen bg-gray-50 p-6">
+  <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center">
+      <i class="pi pi-credit-card text-blue-600 text-3xl mr-2"></i>
+      <h2 class="text-2xl font-bold text-gray-800">Historial de Transacciones</h2>
+    </div>
+    <button (click)="showModal = true"
+            class="bg-blue-500 border border-blue-700 hover:bg-blue-700 text-white font-semibold py-2 px-3 rounded-lg flex items-center gap-2">
+      <i class="pi pi-plus"></i>
+      Nueva Transacción
+    </button>
+
+  </div>
+
+  <!-- MODAL QUE CARGA EL FORMULARIO DE TRANSACCIONES -->
+  <p-dialog [(visible)]="showModal" header="Nueva Transacción" [modal]="true" [style]="{width: '500px'}">
+    <app-transactions-form (transactionCreated)="onTransactionCreated()"></app-transactions-form>
+  </p-dialog>
+
+  <div class="p-4 bg-gray-100 rounded-lg shadow-sm flex items-end gap-3">
+    <input type="text" [(ngModel)]="folioFilter" placeholder="Folio"
+           class="p-2 border border-gray-300 rounded-md w-full" />
+
+    <input type="text" [(ngModel)]="rfcFilter" placeholder="RFC"
+           class="p-2 border border-gray-300 rounded-md w-full" />
+
+    <select [(ngModel)]="statusFilter"
+            class="p-2 border border-gray-300 rounded-md w-full">
+      <option value="">Todos</option>
+      <option *ngFor="let status of statusOptions" [value]="status.value">{{ status.label }}</option>
+    </select>
+
+    <div class="flex items-center gap-2">
+      <label class="text-sm font-medium text-gray-600 whitespace-nowrap">
+        Rango de Fechas:
+      </label>
+      <input type="date" [(ngModel)]="fechaInicio"
+             class="p-2 text-sm border border-gray-300 rounded-md w-full" />
+      <input type="date" [(ngModel)]="fechaFin"
+             class="p-2 text-sm border border-gray-300 rounded-md w-full" />
+    </div>
+
+    <div class="flex gap-2">
+      <button (click)="applyFilter()"
+              class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+        Filtrar
+      </button>
+
+      <button (click)="clearFilters()"
+              class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+        Borrar
+      </button>
+    </div>
+  </div>
+
+  <p-table [value]="filteredTransactions" class="rounded-lg border bg-white overflow-hidden mt-6"
+           [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20]" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr class="bg-blue-600 text-white text-base text-center">
+        <th class="p-2">Folio</th>
+        <th class="p-2">RFC</th>
+        <th class="p-2">Fecha Retiro</th>
+        <th class="p-2">Monto</th>
+        <th class="p-2">Comisión</th>
+        <th class="p-2">Estado</th>
+        <th class="p-2">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-tx>
+      <tr class="hover:bg-gray-100 transition">
+        <td class="p-2">{{ tx.folio }}</td>
+        <td class="p-2">{{ tx.RFC }}</td>
+        <td class="p-2">{{ tx.fechaRetiro | date:'dd/MM/yyyy' }}</td>
+        <td class="p-2 font-semibold text-green-600">{{ tx.monto | currency:'MXN' }}</td>
+        <td class="p-2 font-semibold text-red-500">{{ tx.comision | currency:'MXN' }}</td>
+        <td class="p-2 text-center">
+        <span class="px-2 py-1 rounded-lg text-white text-sm font-semibold"
+              [ngClass]="{
+                'bg-yellow-500': tx.status === 'PENDING',
+                'bg-green-500': tx.status === 'COMPLETED',
+                'bg-red-500': tx.status === 'FAILED'
+              }">
+          {{ tx.status }}
+        </span>
+        </td>
+        <td class="p-2 text-center flex items-center justify-center gap-2">
+          <button (click)="deleteTransaction(tx.id)"
+                  class="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm">
+            Eliminar
+          </button>
+          <div *ngIf="tx.status === 'PENDING'" class="flex items-center gap-2">
+            <select [(ngModel)]="tx.newStatus" class="p-1 border border-gray-300 rounded-md text-sm">
+              <option value="">Seleccionar</option>
+              <option value="COMPLETED">Completado</option>
+              <option value="FAILED">Fallido</option>
+            </select>
+            <button (click)="updateStatus(tx.id, tx.newStatus)"
+                    class="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm">
+              Actualizar
+            </button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>
+</div>

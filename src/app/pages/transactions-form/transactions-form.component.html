@@ -1,0 +1,36 @@
+<form (ngSubmit)="createTransaction()">
+  <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-700">RFC</label>
+    <input type="text" [(ngModel)]="newTransaction.RFC" name="RFC" required
+           class="p-2 border border-gray-300 rounded-md w-full" />
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-700">Fecha de Retiro</label>
+    <input type="date" [(ngModel)]="newTransaction.fechaRetiro" name="fechaRetiro" required
+           class="p-2 border border-gray-300 rounded-md w-full" />
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-700">Monto</label>
+    <input type="number" [(ngModel)]="newTransaction.monto" name="monto" required
+           class="p-2 border border-gray-300 rounded-md w-full" />
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-700">Comisión</label>
+    <input type="number" [(ngModel)]="newTransaction.comision" name="comision" required
+           class="p-2 border border-gray-300 rounded-md w-full" />
+  </div>
+
+  <div class="flex justify-end gap-2">
+    <button type="button" (click)="transactionCreated.emit()"
+            class="px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition">
+      Cancelar
+    </button>
+    <button type="submit"
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition">
+      Guardar
+    </button>
+  </div>
+</form>

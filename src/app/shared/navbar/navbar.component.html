@@ -1,0 +1,28 @@
+<nav class="bg-blue-600 text-white p-4 shadow-lg">
+  <div class="container mx-auto flex justify-between items-center">
+    <!-- Logo o título -->
+    <h1 class="text-2xl font-bold tracking-wide">
+      <i class="pi pi-wallet mr-2"></i> Sistema de Transacciones
+    </h1>
+
+    <!-- Menú de navegación -->
+    <ul class="flex space-x-6">
+      <li>
+        <a routerLink="/usuarios"
+           class="py-2 px-4 rounded-md transition hover:bg-blue-700 hover:underline"
+           routerLinkActive="border-b-2 border-yellow-300 font-bold"
+           [routerLinkActiveOptions]="{exact: true}">
+          <i class="pi pi-users mr-1"></i> Usuarios
+        </a>
+      </li>
+      <li>
+        <a routerLink="/transacciones"
+           class="py-2 px-4 rounded-md transition hover:bg-blue-700 hover:underline"
+           routerLinkActive="border-b-2 border-yellow-300 font-bold"
+           [routerLinkActiveOptions]="{exact: true}">
+          <i class="pi pi-dollar mr-1"></i> Transacciones
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
