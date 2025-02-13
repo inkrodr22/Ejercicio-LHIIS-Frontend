@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
   private readonly _http = inject(HttpClient);
-  private API_URL = 'http://localhost:3000/api';
+  private API_URL = 'https://ejercicio-lhiis-backend-production.up.railway.app/api';
 
   getUsers(): Observable<any> {
     return this._http.get(`${this.API_URL}/usuarios`);
